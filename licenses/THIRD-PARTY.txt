@@ -1,0 +1,36 @@
+numpy 1.26.4
+https://numpy.org
+
+scipy 1.17.1
+
+
+soundfile 0.14.0
+https://github.com/bastibe/python-soundfile
+
+sounddevice 0.5.6
+
+
+customtkinter 6.0.0
+https://customtkinter.tomschimansky.com
+
+darkdetect 0.8.0
+
+
+cffi 2.0.0
+
+
+pycparser 3.0
+
+
+pillow 10.3.0
+
+
+packaging 26.2
+
+
+pyinstaller 6.22.2
+
+
+SoundFile bundles libsndfile (LGPL-2.1-or-later): https://libsndfile.github.io/libsndfile/
+SoundDevice bundles PortAudio (MIT): https://www.portaudio.com/license.html
+Tk/Tcl is included by the Python runtime. Dependencies can be replaced by rebuilding from the included source using requirements.txt and build.ps1.
