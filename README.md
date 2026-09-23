@@ -4,6 +4,8 @@ CrateBuilder turns a folder of drum samples into an MPC1000 program you can audi
 
 It builds eight small kits across the MPC's four banks. Each kit uses eight pads, so you can move between two related kits without leaving the bank. The app runs locally on Windows, leaves your original samples alone, and does not need an account or internet connection.
 
+It can also convert a complete folder of WAV, AIFF, and FLAC files to MPC-ready 44.1 kHz, 16-bit WAVs without building a program.
+
 ![CrateBuilder showing a completed bank of drum kits](docs/images/cratebuilder.png)
 
 ## What it makes
@@ -51,11 +53,24 @@ The executable is currently unsigned, so Windows may show a SmartScreen warning.
 3. Choose bank A-D. Pads 01-08 are the first kit and pads 09-16 are the second.
 4. Click a pad to inspect it. Use **Audition pad** to hear the sample or **Hear groove** to hear the kit in context.
 5. Use **Preview** to try another candidate and **Use sound** to keep it. Kept pads remain locked when you rebuild.
+   You can also turn **Keep on rebuild** on or off directly on any pad.
 6. If the pack is missing a sound category, use **+ Folder** to add more samples. You can also disable substitutions and leave missing roles empty.
 7. Enter a short program name and click **Export for MPC**.
 8. Copy the whole exported folder to your MPC card, then load the `.PGM` from the MPC's LOAD screen.
 
 Space replays the selected pad and Escape stops playback. The preview groove is only there to compare kits; CrateBuilder does not export a sequence.
+
+## Convert a complete sample folder
+
+Use **Convert folder to MPC WAV** when you want compatible audio files without creating kits or a PGM program.
+
+1. Paste or browse to the source folder.
+2. Click **Convert folder to MPC WAV**.
+3. Choose where the converted folder should be created.
+
+CrateBuilder includes all supported files in the source folder and its subfolders. It preserves the folder structure, converts the files to 44.1 kHz/16-bit PCM WAV, and gives files and folders short ASCII names that are safer on the MPC1000. Mono and stereo are preserved. It does not trim, tune, normalize, time-stretch, or apply EQ.
+
+The output includes `FILE_MAP.csv`, which connects every original path to its converted name, and `CONVERSION_REPORT.txt`. Unreadable files and audio with more than two channels are listed in the report. The originals are never changed.
 
 ## How the matching works
 
@@ -104,6 +119,13 @@ python run.py --validate "D:\MPC Programs\MYCRATE\MYCRATE.PGM"
 ```
 
 Other options include `--strict` for no substitutions, plus `--seed`, `--style`, `--bpm`, and `--cache`.
+
+Folder conversion is also available from the command line:
+
+```powershell
+python run.py --convert "D:\Samples\My Pack" `
+  --convert-destination "D:\MPC Samples"
+```
 
 ## Build the executable
 

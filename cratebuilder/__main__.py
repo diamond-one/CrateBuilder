@@ -8,7 +8,9 @@ def main():
     parser.add_argument("--scan", help="Scan a sample folder without opening the desktop app")
     parser.add_argument("--session", help="Open a saved session (or write the result of --scan here)")
     parser.add_argument("--export", help="Export into a new subfolder of this directory")
-    parser.add_argument("--name", default="BOOMCRATES", help="MPC program name")
+    parser.add_argument("--name", default="PROGRAM", help="MPC program name")
+    parser.add_argument("--convert", help="Convert a complete audio folder to MPC-compatible WAV files")
+    parser.add_argument("--convert-destination", help="Parent folder for the converted MPC WAV folder")
     parser.add_argument("--seed", type=int, default=1000)
     parser.add_argument("--style", default="Balanced")
     parser.add_argument("--bpm", type=int, default=90)
@@ -16,6 +18,13 @@ def main():
     parser.add_argument("--cache", default=str(Path(__file__).resolve().parents[1] / ".cache"))
     parser.add_argument("--validate", help="Validate an exported PGM and all referenced WAVs")
     args = parser.parse_args()
+    if args.convert:
+        if not args.convert_destination:
+            parser.error("--convert requires --convert-destination")
+        from .converter import convert_folder
+        folder, report = convert_folder(args.convert, args.convert_destination)
+        print(json.dumps({"folder": str(folder), **report}, indent=2))
+        return
     if args.validate:
         from .pgm import validate_program
         print(json.dumps(validate_program(args.validate), indent=2))

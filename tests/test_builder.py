@@ -11,6 +11,7 @@ import soundfile as sf
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from cratebuilder.audio import audio_features, classify_name, scan_folder
+from cratebuilder.converter import convert_folder
 from cratebuilder.matching import Matcher, overview
 from cratebuilder.model import Assignment, Session
 from cratebuilder.pgm import export_program, program_bytes, sample_names, validate_program
@@ -154,6 +155,43 @@ class KitBuilderTests(unittest.TestCase):
         self.assertTrue(np.isfinite(data).all())
         self.assertLessEqual(float(np.max(np.abs(data))), .851)
         self.assertGreater(float(np.max(np.abs(data))), .01)
+
+    def test_complete_folder_conversion_is_mpc_compatible_and_non_destructive(self):
+        source = self.root / "conversion source"
+        nested = source / "Odd folder name é"
+        nested.mkdir(parents=True)
+        mono = np.sin(np.arange(4800) * .05).astype(np.float32) * .4
+        stereo = np.column_stack((mono[:2400], mono[:2400] * .8))
+        wav = source / "A very long kick name é.wav"
+        aiff = nested / "A very long kick name é.aiff"
+        sf.write(wav, mono, 48000, subtype="PCM_24")
+        sf.write(aiff, stereo, 24000, subtype="PCM_24")
+        broken = nested / "broken.flac"
+        broken.write_bytes(b"not audio")
+        before = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in (wav, aiff, broken)}
+
+        output, report = convert_folder(source, self.root / "converted")
+
+        self.assertEqual(report["found"], 3)
+        self.assertEqual(report["converted"], 2)
+        self.assertEqual(report["failed"], 1)
+        converted = sorted(output.rglob("*.WAV"))
+        self.assertEqual(len(converted), 2)
+        self.assertTrue(all(len(path.stem) <= 16 and path.stem.isascii() for path in converted))
+        for path in converted:
+            info = sf.info(path)
+            self.assertEqual(info.samplerate, 44100)
+            self.assertEqual(info.subtype, "PCM_16")
+            self.assertIn(info.channels, (1, 2))
+        self.assertTrue((output / "FILE_MAP.csv").is_file())
+        self.assertIn("broken.flac", (output / "CONVERSION_REPORT.txt").read_text(encoding="utf-8"))
+        after = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in (wav, aiff, broken)}
+        self.assertEqual(before, after)
+        nested_output, nested_report = convert_folder(source, source)
+        self.assertEqual(nested_report["found"], 3)
+        second_output, second_report = convert_folder(source, source)
+        self.assertEqual(second_report["found"], 3)
+        self.assertNotEqual(nested_output, second_output)
 
 
 if __name__ == "__main__":

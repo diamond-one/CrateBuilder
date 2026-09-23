@@ -11,6 +11,7 @@ from tkinter import filedialog, messagebox
 import customtkinter as ctk
 
 from .audio import scan_folder
+from .converter import convert_folder
 from .matching import Matcher, STYLES, overview, refresh_warnings
 from .model import Assignment, ROLES, Session, pad_name
 from .pgm import export_program
@@ -18,9 +19,6 @@ from .preview import Player
 
 BG, PANEL, INSET = "#121512", "#1D231E", "#161B17"
 TEXT, MUTED, GREEN, AMBER = "#EDF1E9", "#9AA79B", "#D0ED92", "#E6B989"
-DEFAULT_PACK = r"C:\Users\thisi\Music\SAMPLES_ALL\COOKIN SOUL X TAMUZ - BOOM CRATES\COOKIN SOUL X TAMUZ - BOOM CRATES"
-
-
 def app_dir():
     return Path(sys.executable).parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parents[1]
 
@@ -45,12 +43,11 @@ class App(ctk.CTk):
         self.preview_lock = threading.Lock()
         self.data_dir = Path(os.environ["CRATEBUILDER_DATA_DIR"]) if os.environ.get("CRATEBUILDER_DATA_DIR") else Path(os.environ.get("LOCALAPPDATA", str(app_dir()))) / "CrateBuilder"
         self.data_dir.mkdir(parents=True, exist_ok=True)
-        self.path_var = tk.StringVar(value=DEFAULT_PACK if Path(DEFAULT_PACK).is_dir() else "")
+        self.path_var = tk.StringVar(value="")
         self.style_var = tk.StringVar(value="Balanced")
         self.bpm_var = tk.StringVar(value="90")
-        self.name_var = tk.StringVar(value="BOOMCRATES")
+        self.name_var = tk.StringVar(value="")
         self.sub_var = tk.BooleanVar(value=True)
-        self.lock_var = tk.BooleanVar(value=False)
         self.candidate_var = tk.StringVar(value="Scan a folder first")
         self.candidates = {}
         self._layout()
@@ -59,8 +56,6 @@ class App(ctk.CTk):
         self.bind("<Escape>", lambda _: self.stop())
         self.after(80, self.poll)
         starter = Path(session_path) if session_path else self.data_dir / "last-session.json"
-        if not starter.is_file():
-            starter = app_dir() / "BOOMCRATES.session.json"
         if starter.is_file():
             self.after(150, lambda: self.open_session(starter))
         else:
@@ -84,7 +79,8 @@ class App(ctk.CTk):
         self.label(head, "CRATE BUILDER", 26, GREEN, True).grid(row=0, column=0, sticky="w")
         self.label(head, "MPC1000   /   4 BANKS   /   8 KITS   /   64 PADS", 11, MUTED).grid(row=1, column=0, sticky="w")
         self.label(head, "Program name", 11, MUTED).grid(row=0, column=2, sticky="w", padx=(0, 10))
-        ctk.CTkEntry(head, textvariable=self.name_var, width=155, height=34).grid(row=1, column=2, padx=(0, 10))
+        ctk.CTkEntry(head, textvariable=self.name_var, width=155, height=34,
+                     placeholder_text="e.g. MYKIT").grid(row=1, column=2, padx=(0, 10))
         self.export_button = self.button(head, "Export for MPC  →", self.export, primary=True, width=170)
         self.export_button.grid(row=1, column=3)
 
@@ -105,6 +101,8 @@ class App(ctk.CTk):
         self.button(row, "+ Folder", self.add_folder, width=96).pack(side="right")
         self.scan_button = self.button(left, "Analyse & build 8 kits", self.scan, primary=True)
         self.scan_button.pack(fill="x", padx=10, pady=10)
+        self.convert_button = self.button(left, "Convert folder to MPC WAV", self.convert_audio_folder)
+        self.convert_button.pack(fill="x", padx=10, pady=(0, 10))
         self.count_label = self.label(left, "WAV  ·  AIFF  ·  FLAC\nSubfolders included. Audio stays local.", 12, MUTED, justify="left", wraplength=208)
         self.count_label.pack(anchor="w", padx=10, pady=(2, 12))
         self.label(left, "02   MATCHING", 12, GREEN, True).pack(anchor="w", padx=10, pady=(16, 10))
@@ -148,6 +146,7 @@ class App(ctk.CTk):
         for row_num in (1, 2, 4, 5):
             self.pad_area.grid_rowconfigure(row_num, weight=1, uniform="pads")
         self.kit_labels, self.pad_buttons = [], {}
+        self.pad_lock_vars, self.pad_lock_checks = {}, {}
         for group, row_num in ((1, 0), (0, 3)):
             group_bar = ctk.CTkFrame(self.pad_area, fg_color="transparent")
             group_bar.grid(row=row_num, column=0, columnspan=4, sticky="ew", padx=14, pady=(14, 8))
@@ -158,11 +157,22 @@ class App(ctk.CTk):
             self.button(group_bar, "Rebuild", lambda g=group: self.shuffle(self.bank * 2 + g), width=65).pack(side="right", padx=7)
         for local in range(16):
             row_num = {3: 1, 2: 2, 1: 4, 0: 5}[local // 4]
-            button = ctk.CTkButton(self.pad_area, text="", command=lambda n=local: self.select_pad(self.bank * 16 + n, play=True),
+            tile = ctk.CTkFrame(self.pad_area, fg_color="#252D26", corner_radius=8)
+            tile.grid(row=row_num, column=local % 4, sticky="nsew", padx=(10 if local % 4 == 0 else 4, 10 if local % 4 == 3 else 4), pady=(2, 10))
+            tile.grid_columnconfigure(0, weight=1)
+            tile.grid_rowconfigure(0, weight=1)
+            button = ctk.CTkButton(tile, text="", command=lambda n=local: self.select_pad(self.bank * 16 + n, play=True),
                                    corner_radius=8, border_width=1, font=ctk.CTkFont(family="Segoe UI", size=12),
                                    text_color=TEXT, fg_color="#303A2E", hover_color="#475340", width=80)
-            button.grid(row=row_num, column=local % 4, sticky="nsew", padx=(10 if local % 4 == 0 else 4, 10 if local % 4 == 3 else 4), pady=(2, 10))
+            button.grid(row=0, column=0, sticky="nsew")
+            keep = tk.BooleanVar(value=False)
+            check = ctk.CTkCheckBox(tile, text="Keep on rebuild", variable=keep, command=lambda n=local: self.toggle_pad_lock(n),
+                                    font=ctk.CTkFont(size=10), checkbox_width=15, checkbox_height=15,
+                                    height=23, fg_color=GREEN, hover_color="#B5D576")
+            check.grid(row=1, column=0, sticky="w", padx=8, pady=(3, 5))
             self.pad_buttons[local] = button
+            self.pad_lock_vars[local] = keep
+            self.pad_lock_checks[local] = check
         footer = ctk.CTkFrame(center, fg_color="transparent")
         footer.grid(row=3, column=0, sticky="ew", pady=(10, 4))
         self.label(footer, "Hardware view: pad 01 at bottom left\nClick a pad to hear it · Space to replay · Esc to stop", 11, MUTED, justify="left").pack(side="left")
@@ -185,8 +195,6 @@ class App(ctk.CTk):
         self.warning_label = self.label(right, "", 11, AMBER, wraplength=220, justify="left")
         self.warning_label.pack(anchor="w", padx=12, pady=(2, 8))
         self.button(right, "▶  Audition pad", self.audition).pack(fill="x", padx=12, pady=(2, 10))
-        ctk.CTkCheckBox(right, text="Keep this pad on rebuild", variable=self.lock_var, font=ctk.CTkFont(size=11),
-                        checkbox_width=18, checkbox_height=18, command=self.toggle_lock).pack(anchor="w", padx=12, pady=(0, 16))
         self.label(right, "TRY ANOTHER SOUND", 11, GREEN, True).pack(anchor="w", padx=12, pady=(10, 8))
         self.candidate_menu = ctk.CTkOptionMenu(right, values=["Scan a folder first"], variable=self.candidate_var,
                                               fg_color="#303B31", button_color="#435245", font=ctk.CTkFont(size=11),
@@ -223,7 +231,7 @@ class App(ctk.CTk):
             return
         self.busy = True
         self.cancel_event.clear()
-        for widget in (self.scan_button, self.shuffle_button, self.export_button):
+        for widget in (self.scan_button, self.convert_button, self.shuffle_button, self.export_button):
             widget.configure(state="disabled")
         self.cancel_button.configure(state="normal" if cancellable else "disabled")
         def worker():
@@ -246,7 +254,7 @@ class App(ctk.CTk):
                     if self.closing:
                         self.close_app()
                         return
-                    for widget in (self.scan_button, self.shuffle_button, self.export_button):
+                    for widget in (self.scan_button, self.convert_button, self.shuffle_button, self.export_button):
                         widget.configure(state="normal")
                     self.cancel_button.configure(state="disabled")
                     if event == "error":
@@ -268,6 +276,30 @@ class App(ctk.CTk):
         if path:
             self.path_var.set(path)
             self.folder_label.configure(text=Path(path).name)
+
+    def convert_audio_folder(self):
+        if self.busy:
+            return
+        source = self.path_var.get().strip().strip('"')
+        if not Path(source).is_dir():
+            source = filedialog.askdirectory(title="Choose the folder of sounds to convert", parent=self)
+        if not source:
+            return
+        destination = filedialog.askdirectory(title="Choose where to save the converted MPC folder", parent=self)
+        if not destination:
+            return
+        self.path_var.set(source)
+        self.folder_label.configure(text=Path(source).name)
+        self.stop()
+        def done(result):
+            output, report = result
+            self.set_status(f"Converted {report['converted']}/{report['found']} sounds to MPC WAV. Originals were unchanged.")
+            messagebox.showinfo("MPC WAV conversion complete",
+                f"Saved to:\n{output}\n\nConverted: {report['converted']}\nFailed: {report['failed']}\n\n"
+                "All successful files are 44.1 kHz, 16-bit PCM WAV. See FILE_MAP.csv and CONVERSION_REPORT.txt for details.",
+                parent=self)
+            os.startfile(output)
+        self.run_job(lambda: convert_folder(source, destination, self.progress, self.cancel_event), done, cancellable=True)
 
     def settings_changed(self):
         if self.session and not self.busy:
@@ -375,6 +407,8 @@ class App(ctk.CTk):
                 fg_color=("#3C4835" if local < 8 else "#443D32") if i == self.selected else ("#2B352B" if local < 8 else "#342F28"),
                 border_color=GREEN if i == self.selected else AMBER if pad.warning else "#3E473C",
                 border_width=2 if i == self.selected else 1)
+            self.pad_lock_vars[local].set(pad.locked)
+            self.pad_lock_checks[local].configure(state="normal" if self.session else "disabled")
         self.show_selected()
 
     def show_selected(self):
@@ -386,7 +420,6 @@ class App(ctk.CTk):
         self.source_label.configure(text=s.relative if s else "")
         self.reason_label.configure(text=pad.reason)
         self.warning_label.configure(text=pad.warning)
-        self.lock_var.set(pad.locked)
         self.waveform.delete("all")
         width = max(200, self.waveform.winfo_width())
         if s:
@@ -457,9 +490,11 @@ class App(ctk.CTk):
         self.audition()
         return "break"
 
-    def toggle_lock(self):
+    def toggle_pad_lock(self, local):
         if self.session and not self.busy:
-            self.session.pads[self.selected].locked = self.lock_var.get()
+            index = self.bank * 16 + local
+            self.session.pads[index].locked = self.pad_lock_vars[local].get()
+            self.selected = index
             self.refresh()
             self.autosave()
 
@@ -474,7 +509,7 @@ class App(ctk.CTk):
             self.session.pads[self.selected] = Assignment(choice[0].id, "Chosen by you. " + choice[1], locked=True)
             self.refresh()
             self.autosave()
-            self.set_status("Replacement applied and locked. Uncheck Keep this pad to include it in rebuilds.")
+            self.set_status("Replacement applied and locked. Uncheck Keep on rebuild on the pad to rebuild it later.")
 
     def clear_pad(self):
         if self.session and not self.busy:
@@ -552,8 +587,8 @@ class App(ctk.CTk):
         notes = "\n".join(self.session.scan_notes) if self.session else "No folder analysed yet."
         messagebox.showinfo("Crate Builder — how it works", "1. Browse to a folder, then Analyse & build. + Folder adds extra sounds.\n"
             "2. Each bank has two kits. The main kick is pad 05 / 13; main snare 06 / 14.\n"
-            "3. Click pads or Hear groove. Use sound replaces a pad and locks it.\n"
-            "4. Regenerate preserves locked pads. Amber borders mark substitutions or reuse.\n"
+            "3. Click pads or Hear groove. Use sound replaces a pad and turns on Keep on rebuild.\n"
+            "4. Each pad has its own Keep on rebuild checkbox. Amber borders mark substitutions or reuse.\n"
             "5. Export creates a NEW folder with one .PGM, WAVs and a pad map.\n\n"
             "The matcher ranks relative brightness, decay and attack within each instrument, and prefers shared filename families. "
             "It does not guarantee musical taste, infer pitch compatibility, extract hits from loops, or time-stretch fills. "

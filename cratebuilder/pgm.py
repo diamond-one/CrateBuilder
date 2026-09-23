@@ -108,7 +108,7 @@ def validate_program(path):
             "hardware_tested": False}
 
 
-def export_program(session, destination, name="BOOMCRATES", progress=lambda message, value: None):
+def export_program(session, destination, name="PROGRAM", progress=lambda message, value: None):
     refresh_warnings(session)
     if not any(p.sample_id for p in session.pads):
         raise ValueError("Build a kit before exporting.")
