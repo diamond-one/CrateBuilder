@@ -1,166 +1,128 @@
 # CrateBuilder
 
-CrateBuilder turns a folder of drum samples into an MPC1000 program you can audition, adjust, and copy to your memory card.
+**[Download the Windows app](https://github.com/diamond-one/CrateBuilder/releases/latest)** — extract the ZIP and open **CrateBuilder.exe**.
 
-It builds eight small kits across the MPC's four banks. Each kit uses eight pads, so you can move between two related kits without leaving the bank. The app runs locally on Windows, leaves your original samples alone, and does not need an account or internet connection.
+Make drum kits from the samples you already own. Generate a bank, hear the pads, keep the sounds you like and replace the rest. Export to **SP-404MKII** or **MPC1000**.
 
-It can also convert a complete folder of WAV, AIFF, and FLAC files to MPC-ready 44.1 kHz, 16-bit WAVs without building a program.
+![CrateBuilder with a generated demonstration kit and sound replacement controls](docs/images/cratebuilder.png)
 
-![CrateBuilder showing a completed bank of drum kits](docs/images/cratebuilder.png)
+*The screenshot uses generated demonstration sounds. Sample packs are not included.*
 
-## What it makes
+## Make your first kit
 
-One export contains:
+Allow **about five minutes for setup**, plus your first library scan. Scan time depends on the number of files and drive speed.
 
-- one classic MPC1000 `.PGM` program;
-- four banks and eight kits;
-- 64 assigned pads;
-- converted 44.1 kHz, 16-bit WAV copies;
-- a readable pad map;
-- an editable CrateBuilder session; and
-- notes about substitutions or skipped files.
+1. Open **Library**. Choose your sample folder with **Browse**.
+2. Press **Update library**. Originals stay in their existing folders.
+3. Open **Kit**. Choose your sampler and **8 pads** or **16 pads**.
+4. Press **Generate bank A**. Click a pad to hear it.
+5. Use **Send to SP**, **Export WAVs** or **Export MPC** when the kit feels right.
 
-Each half-bank follows the same layout:
+Later scans reuse unchanged analysis. You can close and reopen the app to continue your autosaved crate.
 
-| Pad | Sound |
+## Replace one sound
+
+1. Click the pad you want to change.
+2. Use **Previous sound**, **Next sound**, or the alternatives menu to audition replacements. **Hear original pad** plays the current assignment for comparison.
+3. Press **Use & lock sound** to keep your choice. Unlock that pad when you want generation to change it again.
+
+Trying alternatives leaves the pad unchanged. **Space** hears the pad, **Left / Right** tries alternatives, and **Esc** stops audio. The inspector names the sound being auditioned.
+
+Use **Browse all sounds** to search the wider collection and explicitly place a suitable sample on the selected pad. **Favourite** bookmarks a sound; **Unfavourite** removes the bookmark. **Hide sound** excludes it from future generation without deleting the file or clearing its current pad.
+
+## Generate only what you want
+
+| Change | What generation replaces |
 | --- | --- |
-| 01 / 09 | Alternate kick |
-| 02 / 10 | Snare roll or short fill |
-| 03 / 11 | Alternate snare, rim, or clap |
-| 04 / 12 | Cymbal |
-| 05 / 13 | Main kick |
-| 06 / 14 | Main snare |
-| 07 / 15 | Closed hi-hat |
-| 08 / 16 | Open hi-hat |
+| **Current bank** | Unlocked pads in the visible bank. |
+| **Selected pads** | Only pads with **Select** ticked. Ctrl-click also selects. |
+| **Upper 8** | Percussion and foley in the current 16-pad kit. |
+| **Whole crate** | Unlocked pads across banks A–D. |
 
-The closed and open hats in each kit share a mute group, so they choke one another without cutting off the hats in another kit.
+**Locks protect sounds in every scope.** **Lock bank** protects the whole bank. Unlocking a bank preserves its individual pad locks. Switching banks keeps the other banks' sounds; the generation selection clears.
 
-## Install the Windows app
+In 16-pad mode, the lower eight hold core drums and the upper eight add percussion, foley and character. In 8-pad mode, each bank contains two kits. Four banks hold **64 pad positions**.
 
-The easiest way to use CrateBuilder is the standalone Windows build.
+**Drum character** shapes matching. **Surprise** widens the choices from familiar to adventurous. Generation avoids previous sounds when suitable alternatives exist. A warning explains substitutions or limited choices.
 
-1. Open the repository's **Releases** page.
-2. Download `CrateBuilder.exe` from the latest release.
-3. Put it in a folder where it can save its session and cache.
-4. Double-click it to start.
+## Hear the kit through MIDI
 
-The executable is currently unsigned, so Windows may show a SmartScreen warning. Check that the download came from this repository before choosing **More info -> Run anyway**. First launch can take a few seconds.
+1. Connect your controller. Open **Audio & MIDI** to choose its input and your listening output.
+2. Press **MIDI preview: OFF** to switch preview on.
+3. Play the hardware pads. Press the same button to switch preview off.
 
-## Use CrateBuilder
+The computer plays the samples. MIDI preview does not import them into your sampler. For an SP-404MKII, use **MIDI Mode A**, **PAD Note Out ON**, an empty hardware bank and **USB In → MIX OUT**.
 
-1. Paste a sample-folder path or click **Browse**.
-2. Click **Analyse & build 8 kits**. CrateBuilder scans that folder and its subfolders for WAV, AIFF, and FLAC files.
-3. Choose bank A-D. Pads 01-08 are the first kit and pads 09-16 are the second.
-4. Click a pad to inspect it. Use **Audition pad** to hear the sample or **Hear groove** to hear the kit in context.
-5. Use **Preview** to try another candidate and **Use sound** to keep it. Kept pads remain locked when you rebuild.
-   You can also turn **Keep on rebuild** on or off directly on any pad.
-6. If the pack is missing a sound category, use **+ Folder** to add more samples. You can also disable substitutions and leave missing roles empty.
-7. Enter a short program name and click **Export for MPC**.
-8. Copy the whole exported folder to your MPC card, then load the `.PGM` from the MPC's LOAD screen.
+The normal output list hides duplicate Windows drivers. **Advanced** provides the full list, MIDI channel, note offset and pad learning. Other controllers can use a learned mapping.
 
-Space replays the selected pad and Escape stops playback. The preview groove is only there to compare kits; CrateBuilder does not export a sequence.
+## Export to your sampler
 
-## Convert a complete sample folder
+### SP-404MKII
 
-Use **Convert folder to MPC WAV** when you want compatible audio files without creating kits or a PGM program.
+Connect USB and press **Send to SP**. Check the connected project, choose a destination bank and review the pad map before sending. The app prepares compatible **48 kHz / 16-bit WAV** copies.
 
-1. Paste or browse to the source folder.
-2. Click **Convert folder to MPC WAV**.
-3. Choose where the converted folder should be created.
+**Replace occupied pads** is off by default. Replacing them requires a local recovery backup, saved before writes begin. Cancellation stops between pads; completed transfers remain on the SP. Recovery backups require manual restoration.
 
-CrateBuilder includes all supported files in the source folder and its subfolders. It preserves the folder structure, converts the files to 44.1 kHz/16-bit PCM WAV, and gives files and folders short ASCII names that are safer on the MPC1000. Mono and stereo are preserved. It does not trim, tune, normalize, time-stretch, or apply EQ.
+**Export WAVs** creates copies and a pad map for importing separately. SP kit delivery uses the current kit; it does not configure mute groups or pad effects.
 
-The output includes `FILE_MAP.csv`, which connects every original path to its converted name, and `CONVERSION_REPORT.txt`. Unreadable files and audio with more than two channels are listed in the report. The originals are never changed.
+### MPC1000
 
-## How the matching works
+Choose **MPC1000** under **Your setup**, then press **Export MPC**. Copy the **whole exported folder** to your card and load its `.PGM` from the MPC's LOAD screen.
 
-CrateBuilder starts with filenames and folder names because labelled samples are usually the clearest evidence. It then measures brightness, decay, attack, dynamics, leading silence, and clipping. Main kicks anchor the kits, and the remaining sounds are ranked by family names and relative character.
+One program contains all four banks, with **44.1 kHz / 16-bit WAV** samples. The writer uses classic MPC1000 PGM 1.00, not XPM. Physical loading needs broader testing across Akai OS and JJOS versions.
 
-The matcher avoids identical audio inside a kit, discourages excessive reuse, and prefers short files for fill slots. When a pack does not contain every requested role, optional substitutions are clearly marked in amber.
+## Keep a large sample collection manageable
 
-This is a practical sorting system rather than a model of musical taste. It does not tune drums, detect musical key, time-stretch fills, extract hits from breaks, or apply EQ. Listening and replacing a few choices is still part of making a good kit.
+1. **Library → Tag folders** gives an entire folder a role and tags. New files inherit the rule; no renaming is needed.
+2. **Import expansions** indexes installed NI sample folders without moving them. Pick active packs before analysing their drums.
+3. **Packs & working crates** saves source selections and filters. Mix active packs or keep generation within one pack.
+4. **Browse collection** searches paged results, with pack, category, favourites, hidden and recent-use filters.
+5. **Export selected** copies only the sounds you selected into folders organised by pack and category, with verified copies and manifests.
 
-## Install from source
+Loops and instruments remain separate from automatic drum pools. Short musical one-shots can be placed manually. NI synth presets and Maschine effects are not rendered.
 
-You need Windows, Python 3.12, and a Python installation with Tk support.
+Keep network or cloud samples available offline for audition and export. Unavailable folders keep their cached records while healthy sources update. Online-only cloud files are deferred until downloaded.
+
+## If something does not work
+
+| Problem | First action |
+| --- | --- |
+| No sounds available | Open **Library**, choose a folder and **Update library**. |
+| Generation keeps a sound | Check pad/bank locks, source filters and whether suitable alternatives exist. |
+| Pads respond silently | Choose the output you hear through in **Audio & MIDI**. |
+| A sound is unavailable | Reconnect its drive or download the cloud file, then update the library. |
+| Too few role matches | Add samples, relax source filters, or allow role substitutes in **More**. |
+
+**Save crate** creates a named editable session referencing your originals. App data, tags, favourites and recovery state live in `%LOCALAPPDATA%\CrateBuilder`. Back up that folder and your saved sessions. `CRATEBUILDER_DATA_DIR` can provide a separate local data folder.
+
+<details>
+<summary>Run from source, build and verify</summary>
+
+Python 3.12 is used for the Windows build.
 
 ```powershell
-git clone https://github.com/diamond-one/CrateBuilder.git
-cd CrateBuilder
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-python run.py
-```
-
-If PowerShell blocks activation, you can run the environment's Python directly:
-
-```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe run.py
 ```
 
-## Command-line use
-
-The same builder can run without the graphical interface:
+Build and test:
 
 ```powershell
-python run.py --scan "D:\Samples\My Pack" `
-  --export "D:\MPC Programs" `
-  --session "MyCrate.session.json" `
-  --name MYCRATE
-```
-
-Validate an existing export with:
-
-```powershell
-python run.py --validate "D:\MPC Programs\MYCRATE\MYCRATE.PGM"
-```
-
-Other options include `--strict` for no substitutions, plus `--seed`, `--style`, `--bpm`, and `--cache`.
-
-Folder conversion is also available from the command line:
-
-```powershell
-python run.py --convert "D:\Samples\My Pack" `
-  --convert-destination "D:\MPC Samples"
-```
-
-## Build the executable
-
-Install the development dependency and run the build script:
-
-```powershell
-python -m pip install pyinstaller==6.22.2
+.\.venv\Scripts\python.exe -m pip install pyinstaller==6.22.2
 .\build.ps1
-```
-
-The finished executable is written to `dist\CrateBuilder.exe`.
-
-## MPC compatibility
-
-CrateBuilder writes the classic binary MPC1000 PGM 1.00 format, not the newer MPC XPM format. Exported samples use 44.1 kHz, 16-bit PCM WAV. Mono and stereo are retained, and audio is resampled only when needed. Source loudness is left alone unless attenuation is required to prevent clipping.
-
-The writer has automated coverage for all 64 assignments, pad roles, locks, reproducible matching, missing categories, corrupt audio, conversion, safe filenames, PGM references, velocity bounds, mute groups, repeated exports, and preview levels. The generated program also round-trips through the independent `pympc1000` parser.
-
-Physical MPC1000 loading still needs broader testing across Akai OS and JJOS versions. Save existing MPC work before trying a newly generated program.
-
-## Run the tests
-
-```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe tests\ux_smoke.py
 ```
 
-## Data and sample ownership
+The build produces `dist\CrateBuilder.exe`. Its `--self-check report.json` option uses generated fixtures and does not write to physical samplers. See [VALIDATION.md](VALIDATION.md) for this release's evidence and limits.
 
-Analysis stays on your computer. CrateBuilder reads original samples and writes converted copies into the export folder; it never edits the source files. Cached analysis and the autosaved session live under `%LOCALAPPDATA%\CrateBuilder`.
+`python run.py --help` lists command-line scanning, folder tags, conversion and export options. CLI defaults remain 8 pads / MPC for compatibility; the desktop defaults to 16 pads / SP.
 
-Your samples remain subject to the licence supplied by their creator. Do not upload sample packs or generated kits unless you have permission to redistribute them.
+</details>
 
-## Credits
+## Credits and sample ownership
 
-The default PGM template and independent test parser come from [Stephen Norum's pympc1000](https://github.com/stephenn/pympc1000) under the zlib licence. Format notes are based on the community documentation for [MPC1000 PGM 1.00](https://mybunnyhug.org/fileformats/pgm/). [MPC Maid](https://github.com/cyriux/mpcmaid) was useful background research; its application code was not copied.
+Your audio stays local. Exports create copies; original files are never edited. Sample licences still apply to exported kits.
 
-Third-party notices are included in the `licenses` folder.
-
+The PGM template and independent test parser come from [Stephen Norum's pympc1000](https://github.com/stephenn/pympc1000), under the zlib licence. [SparkyMK2](https://github.com/TuscanPL/SparkyMK2) supplies the separate SP USB helper under GPL-3.0-or-later; matching source accompanies the Windows release. Oswald is bundled under the SIL Open Font License. Notices are in [licenses](licenses).

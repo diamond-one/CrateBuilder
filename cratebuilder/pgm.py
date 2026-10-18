@@ -16,7 +16,7 @@ import soundfile as sf
 
 from .audio import load_audio
 from .matching import refresh_warnings
-from .model import ROLES, pad_name
+from .model import pad_name, role_names
 
 FILE_SIZE = 0x2A04
 PAD_BASE = 0x18
@@ -66,7 +66,7 @@ def program_bytes(session, names):
             data[base + 17] = 70  # MPC default sample level, retaining mixer headroom.
             data[base + 18:base + 20] = bytes([0, 127])
             data[base + 22] = 0  # One shot.
-        data[base + 0x63] = i // 8 + 1 if i % 8 in (6, 7) else 0
+        data[base + 0x63] = i // session.kit_size + 1 if i % session.kit_size in (6, 7) else 0
     return bytes(data)
 
 
@@ -130,6 +130,8 @@ def export_program(session, destination, name="PROGRAM", progress=lambda message
             if wav_name in exported:
                 continue
             s = session.by_id[sample_id]
+            if s.kind == "excluded":
+                raise ValueError(f"{Path(s.path).name} is excluded by a folder rule. Replace this pad before exporting.")
             if hashlib.sha256(Path(s.path).read_bytes()).hexdigest() != s.fingerprint:
                 raise ValueError(f"{Path(s.path).name} changed since analysis. Rescan before exporting.")
             data = load_audio(s)
@@ -141,22 +143,23 @@ def export_program(session, destination, name="PROGRAM", progress=lambda message
         rows = []
         for i, pad in enumerate(session.pads):
             s = session.by_id.get(pad.sample_id)
-            rows.append({"pad": pad_name(i), "kit": i // 8 + 1, "role": ROLES[i % 8],
+            rows.append({"pad": pad_name(i), "kit": i // session.kit_size + 1, "role": role_names(session.kit_size)[i % session.kit_size],
                          "file": names[s.id] + ".WAV" if s else "", "source": s.path if s else "",
                          "instrument": s.kind if s else "", "reason": pad.reason, "warning": pad.warning,
-                         "hat_mute_group": i // 8 + 1 if i % 8 in (6, 7) else 0})
+                         "hat_mute_group": i // session.kit_size + 1 if i % session.kit_size in (6, 7) else 0})
         with (folder / "PAD_MAP.csv").open("w", encoding="utf-8-sig", newline="") as handle:
             writer = csv.DictWriter(handle, fieldnames=rows[0].keys())
             writer.writeheader()
             writer.writerows(rows)
         (folder / "MANIFEST.json").write_text(json.dumps({"validation": validation, "seed": session.seed,
-            "style": session.style, "preview_bpm": session.bpm, "pads": rows}, indent=2), encoding="utf-8")
+            "style": session.style, "kit_size": session.kit_size, "preview_bpm": session.bpm, "pads": rows}, indent=2), encoding="utf-8")
         (folder / "SESSION.json").write_text(json.dumps(session.to_dict(), indent=2), encoding="utf-8")
         warnings = [f"{r['pad']}: {r['warning']}" for r in rows if r["warning"]]
         (folder / "LOAD_ME.txt").write_text(
             f"CRATE BUILDER / MPC1000\n\nCopy this whole folder to your MPC card.\n"
             f"On the MPC1000 LOAD page, load {program_name}.PGM with its samples.\n"
-            "Banks A-D each contain two kits: pads 01-08 and 09-16.\n"
+            + ("Banks A-D each contain two kits: pads 01-08 and 09-16.\n" if session.kit_size == 8 else
+               "Banks A-D each contain one 16-pad kit.\n") +
             "The two hi-hats in each kit share their own mute group.\n"
             "WAV copies are 44.1 kHz / 16-bit PCM, preserving mono/stereo and original lengths.\n"
             "No EQ, time stretch, automatic pitch change, or loudness normalization is applied.\n"

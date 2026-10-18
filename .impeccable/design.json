@@ -1,0 +1,427 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-18T21:49:00.978169+00:00",
+  "title": "Design System: CrateBuilder",
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "Workbench charcoal",
+        "tonalRamp": [
+          "oklch(15.00% 0.00604 78.24)",
+          "oklch(26.43% 0.00604 78.24)",
+          "oklch(37.86% 0.00604 78.24)",
+          "oklch(49.29% 0.00604 78.24)",
+          "oklch(60.71% 0.00604 78.24)",
+          "oklch(72.14% 0.00604 78.24)",
+          "oklch(83.57% 0.00604 78.24)",
+          "oklch(95.00% 0.00604 78.24)"
+        ]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "Raised charcoal",
+        "tonalRamp": [
+          "oklch(15.00% 0.00957 80.67)",
+          "oklch(26.43% 0.00957 80.67)",
+          "oklch(37.86% 0.00957 80.67)",
+          "oklch(49.29% 0.00957 80.67)",
+          "oklch(60.71% 0.00957 80.67)",
+          "oklch(72.14% 0.00957 80.67)",
+          "oklch(83.57% 0.00957 80.67)",
+          "oklch(95.00% 0.00957 80.67)"
+        ]
+      },
+      "inset": {
+        "role": "neutral",
+        "displayName": "Inset charcoal",
+        "tonalRamp": [
+          "oklch(15.00% 0.00547 106.77)",
+          "oklch(26.43% 0.00547 106.77)",
+          "oklch(37.86% 0.00547 106.77)",
+          "oklch(49.29% 0.00547 106.77)",
+          "oklch(60.71% 0.00547 106.77)",
+          "oklch(72.14% 0.00547 106.77)",
+          "oklch(83.57% 0.00547 106.77)",
+          "oklch(95.00% 0.00547 106.77)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Warm lettering",
+        "tonalRamp": [
+          "oklch(15.00% 0.01326 82.40)",
+          "oklch(26.43% 0.01326 82.40)",
+          "oklch(37.86% 0.01326 82.40)",
+          "oklch(49.29% 0.01326 82.40)",
+          "oklch(60.71% 0.01326 82.40)",
+          "oklch(72.14% 0.01326 82.40)",
+          "oklch(83.57% 0.01326 82.40)",
+          "oklch(95.00% 0.01326 82.40)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted parchment",
+        "tonalRamp": [
+          "oklch(15.00% 0.02096 84.59)",
+          "oklch(26.43% 0.02096 84.59)",
+          "oklch(37.86% 0.02096 84.59)",
+          "oklch(49.29% 0.02096 84.59)",
+          "oklch(60.71% 0.02096 84.59)",
+          "oklch(72.14% 0.02096 84.59)",
+          "oklch(83.57% 0.02096 84.59)",
+          "oklch(95.00% 0.02096 84.59)"
+        ]
+      },
+      "disabled": {
+        "role": "neutral",
+        "displayName": "Disabled lettering",
+        "tonalRamp": [
+          "oklch(15.00% 0.01896 81.31)",
+          "oklch(26.43% 0.01896 81.31)",
+          "oklch(37.86% 0.01896 81.31)",
+          "oklch(49.29% 0.01896 81.31)",
+          "oklch(60.71% 0.01896 81.31)",
+          "oklch(72.14% 0.01896 81.31)",
+          "oklch(83.57% 0.01896 81.31)",
+          "oklch(95.00% 0.01896 81.31)"
+        ]
+      },
+      "control": {
+        "role": "neutral",
+        "displayName": "Working surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.01121 78.20)",
+          "oklch(26.43% 0.01121 78.20)",
+          "oklch(37.86% 0.01121 78.20)",
+          "oklch(49.29% 0.01121 78.20)",
+          "oklch(60.71% 0.01121 78.20)",
+          "oklch(72.14% 0.01121 78.20)",
+          "oklch(83.57% 0.01121 78.20)",
+          "oklch(95.00% 0.01121 78.20)"
+        ]
+      },
+      "control-hover": {
+        "role": "neutral",
+        "displayName": "Working hover",
+        "tonalRamp": [
+          "oklch(15.00% 0.01615 78.16)",
+          "oklch(26.43% 0.01615 78.16)",
+          "oklch(37.86% 0.01615 78.16)",
+          "oklch(49.29% 0.01615 78.16)",
+          "oklch(60.71% 0.01615 78.16)",
+          "oklch(72.14% 0.01615 78.16)",
+          "oklch(83.57% 0.01615 78.16)",
+          "oklch(95.00% 0.01615 78.16)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Worn rule",
+        "tonalRamp": [
+          "oklch(15.00% 0.01590 88.75)",
+          "oklch(26.43% 0.01590 88.75)",
+          "oklch(37.86% 0.01590 88.75)",
+          "oklch(49.29% 0.01590 88.75)",
+          "oklch(60.71% 0.01590 88.75)",
+          "oklch(72.14% 0.01590 88.75)",
+          "oklch(83.57% 0.01590 88.75)",
+          "oklch(95.00% 0.01590 88.75)"
+        ]
+      },
+      "core-pad": {
+        "role": "neutral",
+        "displayName": "Core drum surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.00939 80.68)",
+          "oklch(26.43% 0.00939 80.68)",
+          "oklch(37.86% 0.00939 80.68)",
+          "oklch(49.29% 0.00939 80.68)",
+          "oklch(60.71% 0.00939 80.68)",
+          "oklch(72.14% 0.00939 80.68)",
+          "oklch(83.57% 0.00939 80.68)",
+          "oklch(95.00% 0.00939 80.68)"
+        ]
+      },
+      "creative-pad": {
+        "role": "neutral",
+        "displayName": "Creative pad surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.01121 78.20)",
+          "oklch(26.43% 0.01121 78.20)",
+          "oklch(37.86% 0.01121 78.20)",
+          "oklch(49.29% 0.01121 78.20)",
+          "oklch(60.71% 0.01121 78.20)",
+          "oklch(72.14% 0.01121 78.20)",
+          "oklch(83.57% 0.01121 78.20)",
+          "oklch(95.00% 0.01121 78.20)"
+        ]
+      },
+      "action": {
+        "role": "primary",
+        "displayName": "Warm action",
+        "tonalRamp": [
+          "oklch(15.00% 0.05926 35.64)",
+          "oklch(26.43% 0.05926 35.64)",
+          "oklch(37.86% 0.05926 35.64)",
+          "oklch(49.29% 0.05926 35.64)",
+          "oklch(60.71% 0.05926 35.64)",
+          "oklch(72.14% 0.05926 35.64)",
+          "oklch(83.57% 0.05926 35.64)",
+          "oklch(95.00% 0.05926 35.64)"
+        ]
+      },
+      "action-hover": {
+        "role": "primary",
+        "displayName": "Warm action hover",
+        "tonalRamp": [
+          "oklch(15.00% 0.04700 36.28)",
+          "oklch(26.43% 0.04700 36.28)",
+          "oklch(37.86% 0.04700 36.28)",
+          "oklch(49.29% 0.04700 36.28)",
+          "oklch(60.71% 0.04700 36.28)",
+          "oklch(72.14% 0.04700 36.28)",
+          "oklch(83.57% 0.04700 36.28)",
+          "oklch(95.00% 0.04700 36.28)"
+        ]
+      },
+      "on-action": {
+        "role": "primary",
+        "displayName": "Dark action lettering",
+        "tonalRamp": [
+          "oklch(15.00% 0.02317 31.40)",
+          "oklch(26.43% 0.02317 31.40)",
+          "oklch(37.86% 0.02317 31.40)",
+          "oklch(49.29% 0.02317 31.40)",
+          "oklch(60.71% 0.02317 31.40)",
+          "oklch(72.14% 0.02317 31.40)",
+          "oklch(83.57% 0.02317 31.40)",
+          "oklch(95.00% 0.02317 31.40)"
+        ]
+      },
+      "selected": {
+        "role": "primary",
+        "displayName": "Worn red",
+        "tonalRamp": [
+          "oklch(15.00% 0.13558 25.71)",
+          "oklch(26.43% 0.13558 25.71)",
+          "oklch(37.86% 0.13558 25.71)",
+          "oklch(49.29% 0.13558 25.71)",
+          "oklch(60.71% 0.13558 25.71)",
+          "oklch(72.14% 0.13558 25.71)",
+          "oklch(83.57% 0.13558 25.71)",
+          "oklch(95.00% 0.13558 25.71)"
+        ]
+      },
+      "on-selected": {
+        "role": "primary",
+        "displayName": "Cream selection lettering",
+        "tonalRamp": [
+          "oklch(15.00% 0.02931 80.66)",
+          "oklch(26.43% 0.02931 80.66)",
+          "oklch(37.86% 0.02931 80.66)",
+          "oklch(49.29% 0.02931 80.66)",
+          "oklch(60.71% 0.02931 80.66)",
+          "oklch(72.14% 0.02931 80.66)",
+          "oklch(83.57% 0.02931 80.66)",
+          "oklch(95.00% 0.02931 80.66)"
+        ]
+      },
+      "warning": {
+        "role": "secondary",
+        "displayName": "Amber warning",
+        "tonalRamp": [
+          "oklch(15.00% 0.09753 80.01)",
+          "oklch(26.43% 0.09753 80.01)",
+          "oklch(37.86% 0.09753 80.01)",
+          "oklch(49.29% 0.09753 80.01)",
+          "oklch(60.71% 0.09753 80.01)",
+          "oklch(72.14% 0.09753 80.01)",
+          "oklch(83.57% 0.09753 80.01)",
+          "oklch(95.00% 0.09753 80.01)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "App display",
+        "purpose": "Bundled Oswald app name; native pixel sizing."
+      },
+      "headline": {
+        "displayName": "Inspector display",
+        "purpose": "Short Oswald display heading."
+      },
+      "section": {
+        "displayName": "Rail section",
+        "purpose": "Short Oswald rail headings."
+      },
+      "title": {
+        "displayName": "Current sound",
+        "purpose": "Wrapping Segoe UI filename title."
+      },
+      "body": {
+        "displayName": "Working body",
+        "purpose": "Instructions and regular Windows controls."
+      },
+      "label": {
+        "displayName": "Working label",
+        "purpose": "Pad labels and action labels; primary actions use bold."
+      },
+      "small": {
+        "displayName": "Compact label",
+        "purpose": "Select/Lock controls and technical captions."
+      },
+      "technical": {
+        "displayName": "Transfer report",
+        "purpose": "Consolas destination/pad-map review."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "pad-feedback",
+        "value": "110ms",
+        "purpose": "Native playback/MIDI flash is restored after this delay; no decorative entrance motion."
+      }
+    ],
+    "breakpoints": [],
+    "nativeGeometry": {
+      "main": {
+        "initial": [
+          1440,
+          960
+        ],
+        "minimum": [
+          1200,
+          760
+        ]
+      },
+      "audioMidi": {
+        "initial": [
+          690,
+          610
+        ],
+        "minimum": [
+          620,
+          540
+        ]
+      },
+      "spTransfer": {
+        "initial": [
+          880,
+          800
+        ],
+        "minimum": [
+          760,
+          660
+        ]
+      },
+      "layout": "Expandable four-column pad grid between independently scrolling side rails; persistent delivery and status rows."
+    },
+    "provenance": {
+      "platform": "Windows / Python / CustomTkinter",
+      "sources": [
+        "cratebuilder/desk_theme.py",
+        "cratebuilder/assets/grunge.json",
+        "cratebuilder/workspace.py",
+        "cratebuilder/ui.py"
+      ],
+      "componentPreview": "HTML/CSS snippets illustrate native components for the design panel. They are not shipped UI, an interaction harness, or accessibility evidence. Border-box/font rendering may differ from CustomTkinter.",
+      "tonalRamp": "Synthesized OKLCH lightness ramps for panel exploration only. Native widgets use the exact frontmatter colors; ramps add no production tokens.",
+      "verification": "Extracted from source; hardware, listening and screen-reader checks are not asserted."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Illustration of a native primary action; labels stay in working type.",
+      "html": "<button class=\"ds-primary\">Generate bank A</button>",
+      "css": ".ds-primary{font:12px \"Segoe UI\",sans-serif;border-radius:1px;cursor:pointer;height:38px;padding:0 18px;background:#e1b1a4;color:#392a27;border:0;font-weight:700}.ds-primary:hover{background:#f0c9be}.ds-primary:focus-visible{outline:2px solid #e1b1a4;outline-offset:1px;}.ds-primary:disabled{color:#a69f93;cursor:default}"
+    },
+    {
+      "name": "Secondary action",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Illustration of Hear original pad and other neutral actions.",
+      "html": "<button class=\"ds-secondary\">Hear original pad</button>",
+      "css": ".ds-secondary{font:12px \"Segoe UI\",sans-serif;border-radius:1px;cursor:pointer;height:34px;padding:0 14px;background:#4c4842;color:#e7e2d9;border:0}.ds-secondary:hover{background:#605a51}.ds-secondary:focus-visible{outline:2px solid #e1b1a4;outline-offset:1px;}.ds-secondary:disabled{color:#a69f93;cursor:default}"
+    },
+    {
+      "name": "Inset entry",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Native entry surface translated for the panel; browser focus styling is illustrative.",
+      "html": "<label class=\"ds-field\">Tempo / BPM<input class=\"ds-entry\" value=\"92\" inputmode=\"numeric\"></label>",
+      "css": ".ds-field{display:flex;align-items:center;gap:12px;font:13px \"Segoe UI\",sans-serif;color:#c0b9ab}.ds-entry{width:58px;height:32px;padding:0 6px;border:2px solid #767268;border-radius:1px;background:#252522;color:#e7e2d9;font:13px \"Segoe UI\",sans-serif}.ds-entry:focus-visible{outline:2px solid #e1b1a4;outline-offset:1px}"
+    },
+    {
+      "name": "Workspace navigation",
+      "kind": "nav",
+      "refersTo": "navigation-active",
+      "description": "Kit/Library/More segmented navigation; selected tabs retain warm working text.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Workspace\"><button aria-current=\"page\">Kit</button><button>Library</button><button>More</button></nav>",
+      "css": ".ds-nav{display:flex;gap:2px;background:#252522;padding:2px}.ds-nav button{height:32px;padding:0 12px;border:0;border-radius:1px;background:#4c4842;color:#e7e2d9;font:13px \"Segoe UI\",sans-serif;cursor:pointer}.ds-nav button:hover{background:#605a51}.ds-nav button[aria-current]{background:#a9433e}.ds-nav button:focus-visible{outline:2px solid #e1b1a4;outline-offset:1px;}"
+    },
+    {
+      "name": "Working panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Solid inspector surface without decorative shadow; content below is a component example.",
+      "html": "<section class=\"ds-panel\"><h3>Try another sound</h3><p>Trying a sound leaves your pad unchanged.</p></section>",
+      "css": ".ds-panel{padding:14px;border-radius:1px;background:#393631;color:#e7e2d9;max-width:270px}.ds-panel h3{margin:0 0 8px;font:700 22px Oswald,\"Segoe UI\",sans-serif}.ds-panel p{margin:0;font:12px \"Segoe UI\",sans-serif;color:#c0b9ab}"
+    },
+    {
+      "name": "Inspected physical pad",
+      "kind": "custom",
+      "refersTo": "pad-inspected",
+      "description": "Illustrative pad with separately labelled Select and Lock controls; it is not a playable sampler.",
+      "html": "<div class=\"ds-tile\"><button class=\"ds-pad\">A1<br>MAIN KICK<br>Example kick</button><div class=\"ds-pad-controls\"><label><input type=\"checkbox\">Select</label><label><input type=\"checkbox\">Lock</label></div></div>",
+      "css": ".ds-tile{width:170px;background:#252522;border-radius:1px}.ds-pad{width:100%;min-height:80px;background:#a9433e;color:#fff3df;border:2px solid #e1b1a4;border-radius:1px;font:12px \"Segoe UI\",sans-serif;cursor:pointer}.ds-pad:hover{background:#605a51}.ds-pad:focus-visible{outline:2px solid #e1b1a4;outline-offset:1px;}.ds-pad-controls{display:flex;justify-content:space-between;padding:3px 6px;color:#e7e2d9;font:11px \"Segoe UI\",sans-serif}.ds-pad-controls label{display:flex;align-items:center;gap:4px}.ds-pad-controls input{accent-color:#e1b1a4}.ds-pad-controls input:focus-visible{outline:2px solid #e1b1a4;outline-offset:1px;}"
+    },
+    {
+      "name": "Worn divider",
+      "kind": "custom",
+      "description": "Approximation of the native canvas dash sequence (13, 5, 2, 7); no texture behind text.",
+      "html": "<div class=\"ds-rule\" aria-hidden=\"true\"></div>",
+      "css": ".ds-rule{height:5px;min-width:200px;background:repeating-linear-gradient(to right,#767268 0 13px,transparent 13px 18px,#767268 18px 20px,transparent 20px 27px) left 2px/100% 1px no-repeat}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Grunge sampler workbench",
+    "overview": "The selected gallery Grunge direction gives a working sampler surface charcoal material, warm lettering and worn red inspection states. CrateBuilder is a Windows CustomTkinter desktop application. Its visual vocabulary supports making and hearing a kit repeatedly, with the physical pad layout as the central instrument.\n\nOswald gives short display headings their identity; Segoe UI keeps filenames, choices and controls readable. Broken rules supply worn character around working regions, while text and waveforms sit on quiet solid surfaces. The implementation sources are `cratebuilder/desk_theme.py`, `cratebuilder/assets/grunge.json`, `cratebuilder/workspace.py` and the corresponding widget methods in `cratebuilder/ui.py`.",
+    "keyCharacteristics": [
+      "Warm charcoal layers with restrained broken-line detail.",
+      "Worn red inspection states and pale warm action buttons.",
+      "Labelled working controls around a physical four-column pad grid.",
+      "Explicit distinction between hearing an alternative and keeping it."
+    ],
+    "rules": [
+      {
+        "name": "The State Has Words Rule",
+        "body": "Preserve visible Select, Lock, LOCKED, PICK, warning marks and MIDI preview status; color alone must not carry these distinctions.",
+        "section": "colors"
+      },
+      {
+        "name": "The Working Type Rule",
+        "body": "Reserve Oswald for short display headings. Keep pad labels, filenames, buttons and working text in Segoe UI.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "**Do** use the gallery Grunge palette and bundled Oswald for short headings.",
+      "**Do** keep working labels and filenames in Segoe UI on quiet solid surfaces.",
+      "**Do** preserve physical pad mapping and separate inspection, selection and protection states.",
+      "**Do** distinguish preview feedback from the explicit Use & lock action.",
+      "**Do** keep main delivery actions and transfer-dialog final actions outside scrolling content."
+    ],
+    "donts": [
+      "**Don't** add texture behind working text or replace tonal grouping with decorative shadows.",
+      "**Don't** silently apply an alternative merely because the user heard it.",
+      "**Don't** hide hardware destination or overwrite consequences inside connection options.",
+      "**Don't** describe illustrative sidecar snippets as the native implementation or accessibility verification."
+    ]
+  }
+}

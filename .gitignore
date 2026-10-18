@@ -6,6 +6,7 @@ __pycache__/
 *.py[cod]
 *.session.json
 *.PGM
+!cratebuilder/assets/EMPTY.PGM
 *.WAV
 *.wav
 *.AIFF
@@ -16,3 +17,11 @@ __pycache__/
 .mypy_cache/
 .DS_Store
 Thumbs.db
+
+.test-temp/
+.impeccable/questions/
+.impeccable/review/
+build-clean/
+final-dist/
+clean-dist/
+!CrateBuilder.spec

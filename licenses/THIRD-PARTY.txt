@@ -22,10 +22,10 @@ cffi 2.0.0
 pycparser 3.0
 
 
-pillow 10.3.0
+pillow 12.3.0
 
 
-packaging 26.2
+packaging 26.3
 
 
 pyinstaller 6.22.2
@@ -34,3 +34,14 @@ pyinstaller 6.22.2
 SoundFile bundles libsndfile (LGPL-2.1-or-later): https://libsndfile.github.io/libsndfile/
 SoundDevice bundles PortAudio (MIT): https://www.portaudio.com/license.html
 Tk/Tcl is included by the Python runtime. Dependencies can be replaced by rebuilding from the included source using requirements.txt and build.ps1.
+
+Mido 1.3.3 (MIT) and python-rtmidi 1.5.8 (MIT) provide MIDI input.
+Their licence texts are included in mido-LICENSE and python-rtmidi-LICENSE.md.
+
+SparkyMK2 sp404 CLI 0.7.3, GPL-3.0-or-later, is bundled as a separate USB helper.
+Upstream: https://github.com/TuscanPL/SparkyMK2
+Built without source changes from commit 3007b5d4a796ecf752c7866c1cead87d31c5e416.
+GPL text: SparkyMK2-GPL-3.0.txt. Matching source: SparkyMK2-source.zip in the supplied outputs.
+The helper is invoked as a separate process; no Roland code or firmware is included.
+
+Oswald (Google Fonts), SIL Open Font License 1.1. See Oswald-OFL.txt.

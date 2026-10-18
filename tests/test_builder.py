@@ -12,6 +12,7 @@ import soundfile as sf
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from cratebuilder.audio import audio_features, classify_name, scan_folder
 from cratebuilder.converter import convert_folder
+from cratebuilder.kit_export import export_kit, kit_export_filename, kit_folder_name
 from cratebuilder.matching import Matcher, overview
 from cratebuilder.model import Assignment, Session
 from cratebuilder.pgm import export_program, program_bytes, sample_names, validate_program
@@ -192,6 +193,65 @@ class KitBuilderTests(unittest.TestCase):
         second_output, second_report = convert_folder(source, source)
         self.assertEqual(second_report["found"], 3)
         self.assertNotEqual(nested_output, second_output)
+
+    def test_cleared_unlocked_pad_is_refilled_on_rebuild(self):
+        s = Matcher(self.fresh()).build()
+        s.pads[4] = Assignment(None, "Cleared by you", locked=False)
+        Matcher(s).build(0)
+        self.assertIsNotNone(s.pads[4].sample_id)
+        self.assertFalse(s.pads[4].locked)
+
+    def test_cleared_but_locked_empty_pad_stays_empty(self):
+        s = Matcher(self.fresh()).build()
+        s.pads[4] = Assignment(None, "Keep empty", locked=True)
+        Matcher(s).build(0)
+        self.assertIsNone(s.pads[4].sample_id)
+
+    def test_browse_alternatives_include_full_library(self):
+        s = Matcher(self.fresh()).build()
+        strict = Matcher(s).rank(4)  # main kick
+        browse = Matcher(s).rank(4, browse=True)
+        self.assertGreater(len(browse), len(strict))
+        self.assertEqual(len(browse), len(s.samples) - 1)  # excludes current pad sample
+        # Role matches should rank ahead of unrelated kinds.
+        first_kinds = [sample.kind for _, sample, _ in browse[:8]]
+        self.assertTrue(all(kind == "kick" for kind in first_kinds))
+
+    def test_kit_export_uses_pad_prefix_and_skips_empty(self):
+        s = Matcher(self.fresh()).build()
+        kit = 2
+        empty_slot = 4  # pad number 5 within the kit
+        s.pads[kit * 8 + empty_slot] = Assignment(None, "Cleared", locked=False)
+        before = {a.path: hashlib.sha256(Path(a.path).read_bytes()).hexdigest() for a in s.samples}
+        folder, info = export_kit(s, kit, self.root / "kit_exports")
+        self.assertEqual(folder.name, "kit003")
+        self.assertEqual(info["kit"], 3)
+        self.assertEqual(info["files"], 7)
+        self.assertEqual(info["skipped_empty"], 1)
+        wavs = sorted(folder.glob("*.wav"), key=lambda p: p.name)
+        self.assertEqual(len(wavs), 7)
+        numbers = {int(p.name.split("_", 1)[0]) for p in wavs}
+        self.assertEqual(numbers, {1, 2, 3, 4, 6, 7, 8})
+        self.assertFalse(any(p.name.startswith("5_") for p in wavs))
+        for path in wavs:
+            info_wav = sf.info(path)
+            self.assertEqual(info_wav.samplerate, 44100)
+            self.assertEqual(info_wav.subtype, "PCM_16")
+            pad_number = int(path.name.split("_", 1)[0])
+            sample = s.by_id[s.pads[kit * 8 + pad_number - 1].sample_id]
+            self.assertIn(Path(sample.path).stem, path.name)
+        after = {a.path: hashlib.sha256(Path(a.path).read_bytes()).hexdigest() for a in s.samples}
+        self.assertEqual(before, after)
+        second, _ = export_kit(s, kit, self.root / "kit_exports")
+        self.assertNotEqual(folder, second)
+        self.assertEqual(second.name, "kit003_01")
+
+    def test_kit_export_filename_keeps_original_stem(self):
+        used = set()
+        name = kit_export_filename(3, r"D:\packs\KICKS\Big Kick!!.wav", used)
+        self.assertEqual(name, "3_Big Kick!!.wav")
+        self.assertEqual(kit_folder_name(0), "kit001")
+        self.assertEqual(kit_folder_name(7), "kit008")
 
 
 if __name__ == "__main__":
